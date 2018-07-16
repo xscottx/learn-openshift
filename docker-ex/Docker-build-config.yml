@@ -15,11 +15,7 @@ spec:
       uri: 'https://github.com/xscottx/learn-openshift.git'
     type: Git
   strategy:
-    sourceStrategy:
-      from:
-        kind: DockerImage
-        name: 'ubuntu:16.04'
-        namespace: openshift
+    dockerStrategy:
     type: Docker
   triggers:
     - imageChange:
