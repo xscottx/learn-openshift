@@ -1,0 +1,35 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: django-ex-docker
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'django-ex-docker:latest'
+  runPolicy: Serial
+  source:
+    contextDir: /django-ex
+    git:
+      ref: master
+      uri: 'https://github.com/xscottx/learn-openshift.git'
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: DockerImage
+        name: 'ubuntu:16.04'
+        namespace: openshift
+    type: Docker
+  triggers:
+    - imageChange:
+        lastTriggeredImageID: >-
+          docker-registry.default.svc:5000/openshift/python@sha256:faa41271420f7e198e887f74cdcdad89474dc13acde54a227bb5fbe40fe1ead7
+      type: ImageChange
+    - type: ConfigChange
+    - generic:
+        secret: 97f733611036c99f
+      type: Generic
+    - github:
+        secret: a1f674b9c90502b6
+      type: GitHub
